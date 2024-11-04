@@ -66,7 +66,7 @@ export default function QRCodes() {
       console.error('Error: code is null or undefined');
       return;
     }
-    const qrCodeUrl = `${window.location.origin}/preview/${code.id}`;
+    const qrCodeUrl = `/preview/${code.id}`;
     setSelectedQRCode({ ...code, url: qrCodeUrl });
     setShowQRCode(true);
 

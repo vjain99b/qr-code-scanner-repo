@@ -66,7 +66,7 @@ export default function GenerateQR() {
     }
   };
 
-  const previewUrl = `${window.location.origin}/preview/${uniqueCode}`;
+  const previewUrl = `/preview/${uniqueCode}`;
 
   return (
     <div className="p-8">
