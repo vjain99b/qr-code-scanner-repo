@@ -5,6 +5,7 @@ import { db } from '../lib/firebase';
 import { QrCode, ExternalLink, Trash2, Download } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { QRCodeCanvas } from 'qrcode.react';
+import { useNavigate } from 'react-router-dom';
 
 import { getAuth } from 'firebase/auth';
 
@@ -23,6 +24,8 @@ export default function QRCodes() {
   const [qrCodes, setQrCodes] = useState<QRCode[]>([]);
   const [showQRCode, setShowQRCode] = useState(false);
   const [selectedQRCode, setSelectedQRCode] = useState<QRCode | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userId = auth.currentUser?.uid;
@@ -128,7 +131,10 @@ export default function QRCodes() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <div className="flex space-x-3">
                       <a
-                        href={"preview/" + code.id}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate(`/preview/${code.id}`);
+                        }}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-indigo-600 hover:text-indigo-900"
