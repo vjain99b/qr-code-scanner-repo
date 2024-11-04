@@ -1,8 +1,0 @@
-{
-    "routes": [
-      {
-        "src": "/preview/:path*",
-        "dest": "index.html"
-      }
-    ]
-  }
