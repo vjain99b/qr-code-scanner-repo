@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import toast from 'react-hot-toast';
+import { getAuth } from 'firebase/auth';
+
+const auth = getAuth();
 
 interface PageData {
   name: string;
@@ -24,7 +27,8 @@ export default function PreviewPage() {
       if (!code) return;
 
       try {
-        const docRef = doc(db, 'qrCodes', code);
+        const userId = auth.currentUser?.uid;
+        const docRef = doc(db, `users/${userId}/qrCodes`, code);
         const docSnap = await getDoc(docRef);
         console.log(docSnap.data());
         console.log(docSnap.data()?.name);

@@ -6,6 +6,11 @@ import { QrCode, ExternalLink, Trash2, Download } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { QRCodeCanvas } from 'qrcode.react';
 
+import { getAuth } from 'firebase/auth';
+
+const auth = getAuth();
+
+
 interface QRCode {
   id: string;
   name: string;
@@ -20,10 +25,12 @@ export default function QRCodes() {
   const [selectedQRCode, setSelectedQRCode] = useState<QRCode | null>(null);
 
   useEffect(() => {
+    const userId = auth.currentUser?.uid;
     const fetchQRCodes = async () => {
-      const qrCodesRef = collection(db, 'qrCodes');
+      toast.success('OK SUCCESS');
+      toast.success(`users/${userId}/qrCodes`);
+      const qrCodesRef = collection(db, `users/${userId}/qrCodes`);
       const qrCodesSnapshot = await getDocs(query(qrCodesRef));
-      toast.success('HERE WE GO!');
       console.log(qrCodesSnapshot.docs);
 
       const codes = qrCodesSnapshot.docs.map(doc => ({
@@ -41,7 +48,8 @@ export default function QRCodes() {
 
   const handleDeleteCode = async (id: string | number) => {
     try {
-      await deleteDoc(doc(db, 'qrCodes', String(id)));
+      const userId = auth.currentUser?.uid;
+      await deleteDoc(doc(db, `users/${userId}/qrCodes`, String(id)));
       // Update the qrCodes state to reflect the deletion
       setQrCodes(qrCodes.filter((code) => code.id !== id));
     } catch (error) {

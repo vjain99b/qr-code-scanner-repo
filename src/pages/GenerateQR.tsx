@@ -9,6 +9,10 @@ import { useForm } from 'react-hook-form';
 import { Image, Type, FileText, Layout } from 'lucide-react';
 import toast from 'react-hot-toast';
 import SortableSection from '../components/SortableSection';
+import { getAuth } from 'firebase/auth';
+
+const auth = getAuth();
+
 
 interface Section {
   id: string;
@@ -58,8 +62,8 @@ export default function GenerateQR() {
         createdAt: new Date(),
         scans: 0,
       };
-
-      await setDoc(doc(db, 'qrCodes', uniqueCode), pageData);
+      const userId = auth.currentUser?.uid;
+      await setDoc(doc(db, `users/${userId}/qrCodes`, uniqueCode), pageData);
       toast.success('QR code created successfully!');
     } catch (error) {
       toast.error('Failed to create QR code');
